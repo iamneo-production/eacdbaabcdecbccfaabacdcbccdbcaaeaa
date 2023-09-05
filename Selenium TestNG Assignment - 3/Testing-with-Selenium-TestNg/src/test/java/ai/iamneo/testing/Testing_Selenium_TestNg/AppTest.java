@@ -8,7 +8,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.Color;
 import org.testng.annotations.BeforeTest;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
@@ -40,18 +42,23 @@ public class AppTest {
 		   driver.switchTo().frame(frm);
 		   WebElement source=driver.findElement(By.id("draggable"));
 		   WebElement destination=driver.findElement(By.id("droppable"));
-		   Actions act=new Actions
-               
-		 String get = "Dropped or not"; //Get the text of Dropped
-		 Assert.assertEquals(get, " ");
+		   Actions act=new Actions(driver);
+           act.dragAndDrop(source, destination).build().perform();
+		   WebElement text=driver.findElement(By.xpath("//*[@id=\"droppable\"]/p"));
+
+		 String get = text.getText(); //Get the text of Dropped
+		 Assert.assertEquals(get, "Dropped!");
 	}
+
 	@Test
 	public void testcase_3() throws InterruptedException 
       {
 	       //write Your Code here to Login
+		   WebElement destination=driver.findElement(By.id("droppable"));
+		   String clr=destination.getCssValue("color");
                
-		 String color = "Get the color"; //Get the Color
-		 Assert.assertEquals(color, " ");
+		 String color = Color.fromString(clr).asHex();; //Get the Color
+		 Assert.assertEquals(color, "#777620");
 	}
 
 		
